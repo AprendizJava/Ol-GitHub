@@ -1,0 +1,123 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+		<h:outputStylesheet>
+			.col_id {
+				min-width: 50px;
+   				text-align: center;
+			}
+			.col_login {
+				min-width: 70px;
+   				text-align: center;
+			}
+			.col_disciplina {
+				min-width: 180px;
+   				text-align: center;
+			}
+			.centro {
+   				text-align: center;
+			}
+			.direita {
+				min-width: 100px;
+   				text-align: right;
+			}
+			.aprovado {
+				color: green;
+			}
+			.reprovado {
+				color: red;
+			}
+			.pctFaltas-red {
+				background-color: red;
+				padding: 2px;
+				color: white;
+			}
+			.pctFaltas-azul {
+				background-color: #8DB7F3;
+				padding: 2px;
+				color: white;
+			}
+			.pctFaltas-green {
+				background-color: green;
+				padding: 2px;
+				color: white;
+			}
+		</h:outputStylesheet>
+
+        <h1>Extrato Financeiro</h1>
+        <h3>Aluno: #{extratoAction.aluno.nome}</h3>
+        <h3>Curso: #{extratoAction.aluno.curso.descricao}</h3>
+       <h:form style="margin-top:10px">
+       		<rich:panel header="Extrato do Semestre">
+       			<c:forEach var="p" items="#{extratoAction.periodos}">
+		       		<rich:dataTable value="#{p.extratos}" var="ex" style="width: 100%;margin-bottom:20px"
+		           		columnClasses="col_id, direita, direita, direita, direita, centro" 
+		           		rendered="#{not usuario.usuarios.isEmpty()}">
+						<f:facet name="header">Período #{p.ano}.#{p.semestre}</f:facet>
+			           	<rich:column>
+							<f:facet name="header">Vencimento</f:facet>
+							<h:outputText value="#{ex.vencimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Valor</f:facet>
+							<h:outputText value="#{ex.valor}">
+								<f:convertNumber minFractionDigits="2" locale="pt_BR"/>
+							</h:outputText>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Desconto</f:facet>
+							<h:outputText value="#{ex.desconto}">
+								<f:convertNumber minFractionDigits="2" locale="pt_BR"/>
+							</h:outputText>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Juros</f:facet>
+							<h:outputText value="#{ex.juros}">
+								<f:convertNumber minFractionDigits="2" locale="pt_BR"/>
+							</h:outputText>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Multa</f:facet>
+							<h:outputText value="#{ex.multa}">
+								<f:convertNumber minFractionDigits="2" locale="pt_BR"/>
+							</h:outputText>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Situação</f:facet>
+							<h:outputText value="#{ex.status.descricao}" styleClass="#{ex.status.cssClass}"/>
+			           	</rich:column>
+			           	<rich:column>
+							<f:facet name="header">Ações</f:facet>
+							<h:commandLink action="#{extratoAction.download}" value="Gerar Boleto" actionListener="#{extratoAction.configBoletoAux}" >
+								<f:attribute name="vencimento" value="#{ex.vencimento}"/>
+								<f:attribute name="valor" value="#{ex.valor}"/>
+							</h:commandLink>
+			           	</rich:column>
+		           </rich:dataTable>
+	           </c:forEach>
+	           
+	           <s:div style="margin: 8px; color: green">
+	           	Legendas
+	           </s:div>
+	           <s:div style="margin: 8px; color: green">
+	           	 <span class="pctFaltas-red">Em Atraso</span>
+	           	 <span class="pctFaltas-azul">A Vencer</span>
+	           	 <span class="pctFaltas-green">Pago</span>
+	           </s:div>
+           </rich:panel>
+		</h:form>
+    </ui:define>
+</ui:composition>

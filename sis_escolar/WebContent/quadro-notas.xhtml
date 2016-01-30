@@ -1,0 +1,106 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+		<h:outputStylesheet>
+			.col_id {
+				min-width: 50px;
+   				text-align: center;
+			}
+			.col_login {
+				min-width: 70px;
+   				text-align: center;
+			}
+			.centro {
+   				text-align: center;
+			}
+			.direita {
+   				text-align: right;
+			}
+			.aprovado {
+				color: green;
+			}
+			.reprovado {
+				color: red;
+			}
+		</h:outputStylesheet>
+
+        <h1>Quadro de Notas</h1>
+        <h3>Aluno: #{notaAction.aluno.nome}</h3>
+        <h3>Curso: #{notaAction.aluno.curso.descricao}</h3>
+       <h:form style="margin-top:10px">
+       		<rich:panel header="Notas do Semestre">
+	       		<rich:dataTable value="#{notaAction.notas}" var="n" style="width: 100%"
+	           		columnClasses="col_id, col_login, centro,centro, direita, direita, direita, direita, direita, direita, centro" 
+	           		rendered="#{not usuario.usuarios.isEmpty()}">
+		           	<rich:column>
+						<f:facet name="header">Cod. Disciplina</f:facet>
+						<h:outputText value="#{n.codDisciplina}"/>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Disciplina</f:facet>
+						<h:outputText value="#{n.disciplina}"/>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Turma</f:facet>
+						<h:outputText value="#{n.turma}"/>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Semestre</f:facet>
+						<h:outputText value="#{n.semestre}"/>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Nota 1</f:facet>
+						<h:outputText value="#{n.nota1}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Nota 2</f:facet>
+						<h:outputText value="#{n.nota2}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Nota 3</f:facet>
+						<h:outputText value="#{n.nota3}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Nota 4</f:facet>
+						<h:outputText value="#{n.nota4}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Média Final</f:facet>
+						<h:outputText value="#{n.mediaFinal}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Média Turma</f:facet>
+						<h:outputText value="#{n.mediaTurma}">
+							<f:convertNumber minFractionDigits="2"/>
+						</h:outputText>
+		           	</rich:column>
+		           	<rich:column>
+						<f:facet name="header">Status</f:facet>
+						<h:outputText value="Aprovado" rendered="#{n.status}" styleClass="aprovado"/>
+						<h:outputText value="Reprovado" rendered="#{not n.status}" styleClass="reprovado"/>
+		           	</rich:column>
+	           </rich:dataTable>
+           </rich:panel>
+		</h:form>
+    </ui:define>
+</ui:composition>

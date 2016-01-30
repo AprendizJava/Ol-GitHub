@@ -1,0 +1,58 @@
+<rich:toolbar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+    <rich:toolbarGroup>
+        <h:outputText value="#{projectName}:"/>
+        <s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="end" />
+        <s:link id="sobreId" view="/home.xhtml" value="Sobre" propagation="end"/>
+    </rich:toolbarGroup>
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none" rendered="#{identity.loggedIn and s:hasRole('admin')}">
+        <f:facet name="label">
+        	<h:outputText value="Admin"/>
+       	</f:facet>
+		<rich:menuItem>
+	    	<s:link view="/user-admin.xhtml"
+	           	value="Usuários"
+	           	id="users"
+				includePageParams="false"
+	     		propagation="end"/>
+	     </rich:menuItem>
+    </rich:dropDownMenu>
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none" rendered="#{identity.loggedIn and s:hasRole('aluno')}">
+        <f:facet name="label">
+	    	<h:graphicImage value="/img/student.png" styleClass="pic" />
+        	<h:outputText value="Acadêmico"/>
+       	</f:facet>
+		<rich:menuItem icon="/img/note.png">
+	    	<s:link view="/quadro-notas.xhtml"
+	           	value="Quadro de Notas"
+	           	id="notas"
+				includePageParams="false"
+	     		propagation="end"/>
+	     </rich:menuItem>
+		<rich:menuItem icon="/img/school.png">
+	    	<s:link view="/frequencia.xhtml"
+	           	value="Frequência"
+	           	id="frequencia"
+				includePageParams="false"
+	     		propagation="end"/>
+	     </rich:menuItem>
+		<rich:menuItem icon="/img/dollar.png">
+	    	<s:link view="/financeiro.xhtml"
+	           	value="Financeiro"
+	           	id="financeiro"
+				includePageParams="false"
+	     		propagation="end"/>
+	     </rich:menuItem>
+    </rich:dropDownMenu>
+    <!-- @newMenuItem@ -->
+    <rich:toolbarGroup location="right">
+        <h:outputText id="menuWelcomeId" value="logado como: #{credentials.username}" rendered="#{identity.loggedIn}"/>
+        <s:link id="menuLoginId" view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+        <s:link id="menuLogoutId" view="/home.xhtml" action="#{identity.logout()}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+    </rich:toolbarGroup>
+</rich:toolbar>

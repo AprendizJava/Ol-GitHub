@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+		<h:outputStylesheet>
+			.col_id {
+				min-width: 50px;
+   				text-align: center;
+			}
+			.col_login {
+				min-width: 70px;
+   				text-align: center;
+			}
+		</h:outputStylesheet>
+
+        <h1>Criar Novo Usuário</h1>
+        
+       <h:form style="margin-top:10px">
+        	<a4j:region>
+		        <rich:panel header="Dados de Usuários">
+		           <s:decorate id="nomeField" template="layout/edit.xhtml">
+		                <ui:define name="label">Login</ui:define>
+		                <h:inputText id="login"
+		                           size="45"
+		                      maxlength="45"
+		                      required="true"
+				         requiredMessage="Campo Login obrigatório!"
+		                          value="#{usuario.usuarioAux.login}">
+		                    <a4j:ajax event="blur" render="nomeField" bypassUpdates="true"/>
+		                </h:inputText>
+		                <ui:define name="msg">
+		                	<rich:message for="login"/>
+		                </ui:define>
+		            </s:decorate>
+		            
+		           <s:decorate id="senhaField" template="layout/edit.xhtml">
+		                <ui:define name="label">Senha</ui:define>
+		                <h:inputSecret id="senha"
+		                           size="45"
+		                      maxlength="45"
+		                      required="true"
+				         requiredMessage="Campo Senha obrigatório!"
+		                          value="#{usuario.usuarioAux.senha}">
+		                    <a4j:ajax event="blur" render="senhaField" bypassUpdates="true"/>
+	                    </h:inputSecret>
+		                <ui:define name="msg">
+		                	<rich:message for="senha"/>
+		                </ui:define>
+		            </s:decorate>
+		            
+		           <s:decorate id="grupoField" template="layout/edit.xhtml">
+		                <ui:define name="label">Grupos de Usuário</ui:define>
+			      		<rich:pickList sourceCaption="Roles disponíveis" targetCaption="Roles selecionadas" 
+			      			value="#{usuario.rolesPickSelected}" converter="#{rolesConverter}" var="role"
+			      			listHeight="100px" id="pickRoles"
+			      			required="true" addAllText="⇒ Add Todos"
+			      			removeAllText="⇐ Remover Todos"
+				            requiredMessage="Campo Grupos de Usuário obrigatório!">
+			      			<f:selectItems value="#{usuario.rolesPickToSelect}"/>
+				      		<rich:column>
+				      			#{role.descricao}
+				      		</rich:column>
+			      		</rich:pickList>
+		                <ui:define name="msg">
+		                	<rich:message for="pickRoles"/>
+		                </ui:define>
+		            </s:decorate>
+		        </rich:panel>
+		        
+		         <div class="actionButtons">
+		            <a4j:commandButton value="Salvar" action="#{usuario.salvarUsuario}" />
+		            <s:button id="cancelar" value="Cancelar" view="/user-admin.xhtml" propagation="none" action="#{usuario.limpar}"/>
+		         </div>
+	         </a4j:region>
+		</h:form>
+    </ui:define>
+</ui:composition>

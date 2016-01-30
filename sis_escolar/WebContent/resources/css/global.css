@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+body {
+	font-family: Segoe UI;
+}
+.actionButtons {
+	margin: 10px 0;
+}
+.actionButtons input {
+	margin: 0 5px;
+}
+.lbl_nenhumdado {
+	color: orange;
+}
+.pic {
+	    width: 10px;
+    margin: 0px 4px;
+    padding-top: 1px;
+}
